@@ -12,7 +12,7 @@ import java.util.Scanner;
  */
 public class NewsService {
 
-    private final String apiKey = "da167ab91ac545208c95b169ad56b74d";
+    private final String apiKey = "5a283dbdb9f64f28a458d68141f7fefc";
 
     /**
      * Fetches news data from the news API based on the provided keyword.
@@ -30,7 +30,7 @@ public class NewsService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedDate = currentDate.format(formatter);
 
-        String apiUrl = "https://newsapi.org/v2/everything?q=" + newsKeyword + "&from=2024-07-04&sortBy=publishedAt&apiKey=" + this.apiKey;
+        String apiUrl = "https://newsapi.org/v2/everything?q=" + newsKeyword + "&from=2024-07-05&sortBy=publishedAt&apiKey=" + this.apiKey;
 
         // Open a connection to the URL
         URL url = new URL(apiUrl);
@@ -58,4 +58,10 @@ public class NewsService {
 
         return response.toString();
     }
+
+public String getApiKey() {
+        return apiKey;
+    }
+
+
 }

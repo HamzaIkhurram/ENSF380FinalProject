@@ -4,4 +4,7 @@
     <file url="file://$PROJECT_DIR$/src/main/java/com/example/demo/services/AdvertisementService.java" dialect="GenericSQL" />
     <file url="PROJECT" dialect="SQLite" />
   </component>
+  <component name="SqlResolveMappings">
+    <file url="file://$PROJECT_DIR$/src/test/java/com/example/demo/services/AdvertisementServiceTest.java" scope="{&quot;node&quot;:{  &quot;@negative&quot;:&quot;1&quot;,  &quot;group&quot;:{   &quot;@kind&quot;:&quot;root&quot;,   &quot;node&quot;:{    &quot;@negative&quot;:&quot;1&quot;   }  } }}" />
+  </component>
 </project>

@@ -35,6 +35,14 @@ public class DatabaseHelper {
      * media table has columns id, advertisement_id, file_path, and file_type.
      */
     public static void createNewTables() {
+
+
+        // Drop Tables
+        String dropAdvertisementsTable = "DROP TABLE IF EXISTS advertisements;";
+        String dropMediaTable = "DROP TABLE IF EXISTS media;";
+
+
+
         String advertisementsTable = "CREATE TABLE IF NOT EXISTS advertisements (\n"
                 + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
                 + " title TEXT NOT NULL,\n"
@@ -53,6 +61,8 @@ public class DatabaseHelper {
 
         try (Connection conn = connect();
              Statement stmt = conn.createStatement()) {
+            stmt.execute(dropAdvertisementsTable);
+            stmt.execute(dropMediaTable);
             stmt.execute(advertisementsTable);
             stmt.execute(mediaTable);
             System.out.println("Tables have been created.");

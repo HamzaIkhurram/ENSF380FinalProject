@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Utility class for making train announcements.
  */
-public class TrainAnnouncement {
+public abstract class TrainAnnouncement {
 
     /**
      * Announces the next station for the given train.
@@ -16,9 +16,9 @@ public class TrainAnnouncement {
      * @param train    the train object
      * @param stations the list of stations
      */
-    public static void announceNextStation(Train train, List<Station> stations) {
+    public static void announceNextStation(Train train, List<Station> stations, TextToSpeech textToSpeech) {
 
-        TextToSpeech textToSpeech = new TextToSpeech();
+         textToSpeech = new TextToSpeech();
         Station nextStation = train.getNextStation(stations);
         String announcement = "Next stop: " + nextStation.getStationName();
         if (nextStation.getCommonStations() != null && !nextStation.getCommonStations().isEmpty()) {
@@ -28,4 +28,5 @@ public class TrainAnnouncement {
         textToSpeech.speak(announcement);
         textToSpeech.deallocate();
     }
+
 }

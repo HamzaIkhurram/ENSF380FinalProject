@@ -81,6 +81,7 @@ public class MainController {
     private String newsKeyword;
     private String inputFile;
     private String outputFolder;
+    private TextToSpeech textToSpeech = TextToSpeech.getInstance();
 
     @FXML
     public void initialize() {
@@ -92,10 +93,10 @@ public class MainController {
         initializeTrainSimulation();
     }
 
-    private void loadWeather() {
+    void loadWeather() {
         System.out.println("Loading weather data...");
         WeatherController weatherController = new WeatherController();
-        weatherController.fetchTimeAndWeather(timeWeatherLabel, temperatureLabel, addTemperatureLabel, windSpeedLabel, weatherService, weatherParser);
+        weatherController.fetchTimeAndWeather(timeWeatherLabel, temperatureLabel, addTemperatureLabel, windSpeedLabel);
     }
 
     private void setupDummyData() {
@@ -105,20 +106,20 @@ public class MainController {
         trainNextTimeLabel.setText("1 min");
     }
 
-    private void loadNews() {
+    void loadNews() {
         System.out.println("Loading news data...");
         NewsController newsController = new NewsController();
         newsController.fetchAndDisplayNews(newsTimeline, newsService, newsParser, newsLabel, newsKeyword, newsScrollPane);
     }
 
-    private void insertSampleAdvertisements() {
+    void insertSampleAdvertisements() {
         int adId1 = advertisementService.insertAdvertisement("Ad 1", "2024-01-01", "2024-12-31", "2024-01-01");
         if (adId1 != -1) {
             advertisementService.insertMedia(adId1, "/com/example/demo/images/advertisement_1.jpg", "JPEG");
         }
     }
 
-    private void loadAdvertisements() {
+    void loadAdvertisements() {
         adMediaPaths = advertisementService.getMediaForAdvertisement(1);
         if (adMediaPaths != null && !adMediaPaths.isEmpty()) {
             displayNextAdvertisement();
@@ -127,7 +128,7 @@ public class MainController {
         }
     }
 
-    private void displayNextAdvertisement() {
+    void displayNextAdvertisement() {
         if (adMediaPaths != null && !adMediaPaths.isEmpty()) {
             if (currentAdIndex >= adMediaPaths.size()) {
                 currentAdIndex = 0;
@@ -153,7 +154,7 @@ public class MainController {
         }
     }
 
-    private void displayMapImage() {
+    void displayMapImage() {
         // Clear the canvas
         gc.clearRect(0, 0, mapCanvas.getWidth(), mapCanvas.getHeight());
 
@@ -231,7 +232,7 @@ public class MainController {
         this.newsKeyword = defaultNewsKeyWord;
     }
 
-    private void initializeTrainSimulation() {
+    void initializeTrainSimulation() {
 
         if (inputFile == null || inputFile.trim().isEmpty()) {
             inputFile = "src/main/resources/com/example/demo/data/simulator/subway.csv";
@@ -276,10 +277,10 @@ public class MainController {
         OutputTrainsPosition.printTrainPositions(trains, stations, outputFolder);
     }
 
-    private void updateUIForTrain(Train train) {
+    void updateUIForTrain(Train train) {
         updateTrainInfoUI(train);
         updateStationInfoUI(train);
-        TrainAnnouncement.announceNextStation(train, getStationsByLine(stations, train.getLine()));
+        TrainAnnouncement.announceNextStation(train, getStationsByLine(stations, train.getLine()), TextToSpeech.getInstance());
     }
 
     private List<Station> getStationsByLine(List<Station> stations, String line) {
@@ -344,5 +345,365 @@ public class MainController {
 
     public void setOutputFolder(String outputFolder) {
         this.outputFolder = outputFolder;
+    }
+
+    public Label getTemperatureLabel() {
+        return temperatureLabel;
+    }
+
+    public Label getAddTemperatureLabel() {
+        return addTemperatureLabel;
+    }
+
+    public Label getWindSpeedLabel() {
+        return windSpeedLabel;
+    }
+
+    public VBox getCurrentStationInfo() {
+        return currentStationInfo;
+    }
+
+    public HBox getTrainStationInfo() {
+        return trainStationInfo;
+    }
+
+    public Label getCurrentStationLabel() {
+        return currentStationLabel;
+    }
+
+    public Label getTrainIDLabel() {
+        return trainIDLabel;
+    }
+
+    public Label getNextStationLabel() {
+        return nextStationLabel;
+    }
+
+    public Label getTrainDirectionLabel() {
+        return trainDirectionLabel;
+    }
+
+    public HBox getNextStationsInfo() {
+        return nextStationsInfo;
+    }
+
+    public Label getPrevStation() {
+        return prevStation;
+    }
+
+    public Label getNextStation1() {
+        return nextStation1;
+    }
+
+    public Label getNextStation2() {
+        return nextStation2;
+    }
+
+    public Label getNextStation3() {
+        return nextStation3;
+    }
+
+    public Label getNextStation4() {
+        return nextStation4;
+    }
+
+    public int getCurrentAdIndex() {
+        return currentAdIndex;
+    }
+
+    public List<String> getAdMediaPaths() {
+        return adMediaPaths;
+    }
+
+    public HBox getTopSection() {
+        return topSection;
+    }
+
+    public VBox getAdSection() {
+        return adSection;
+    }
+
+    public Label getAdLabel() {
+        return adLabel;
+    }
+
+    public VBox getWeatherSection() {
+        return weatherSection;
+    }
+
+    public Label getTimeWeatherLabel() {
+        return timeWeatherLabel;
+    }
+
+    public Label getTrainInfoLabel() {
+        return trainInfoLabel;
+    }
+
+    public VBox getBottomSection() {
+        return bottomSection;
+    }
+
+    public HBox getTrainInfoSection() {
+        return trainInfoSection;
+    }
+
+    public ScrollPane getNewsScrollPane() {
+        return newsScrollPane;
+    }
+
+    public HBox getNewsSection() {
+        return newsSection;
+    }
+
+    public Label getNewsLabel() {
+        return newsLabel;
+    }
+
+    public HBox getTrainInfoLeft() {
+        return trainInfoLeft;
+    }
+
+    public Label getTrainDestinationLabel() {
+        return trainDestinationLabel;
+    }
+
+    public Label getTrainTimeLabel() {
+        return trainTimeLabel;
+    }
+
+    public HBox getTrainInfoRight() {
+        return trainInfoRight;
+    }
+
+    public Label getTrainNextStopLabel() {
+        return trainNextStopLabel;
+    }
+
+    public Label getTrainNextTimeLabel() {
+        return trainNextTimeLabel;
+    }
+
+    public Canvas getMapCanvas() {
+        return mapCanvas;
+    }
+
+    public GraphicsContext getGc() {
+        return gc;
+    }
+
+    public NewsService getNewsService() {
+        return newsService;
+    }
+
+    public NewsParser getNewsParser() {
+        return newsParser;
+    }
+
+    public WeatherService getWeatherService() {
+        return weatherService;
+    }
+
+    public WeatherParser getWeatherParser() {
+        return weatherParser;
+    }
+
+    public AdvertisementService getAdvertisementService() {
+        return advertisementService;
+    }
+
+    public Timeline getTrainSimulationTimeline() {
+        return trainSimulationTimeline;
+    }
+
+    public Timeline getUiUpdateTimeline() {
+        return uiUpdateTimeline;
+    }
+
+    public List<Train> getTrains() {
+        return trains;
+    }
+
+    public List<Station> getStations() {
+        return stations;
+    }
+
+    public Image getMapImage() {
+        return mapImage;
+    }
+
+    public Timeline getNewsTimeline() {
+        return newsTimeline;
+    }
+
+    public void setupCanvas(Canvas canvas) {
+        this.mapCanvas = canvas;
+    }
+
+    public void setTemperatureLabel(Label temperatureLabel) {
+        this.temperatureLabel = temperatureLabel;
+    }
+
+    public void setAddTemperatureLabel(Label addTemperatureLabel) {
+        this.addTemperatureLabel = addTemperatureLabel;
+    }
+
+    public void setWindSpeedLabel(Label windSpeedLabel) {
+        this.windSpeedLabel = windSpeedLabel;
+    }
+
+    public void setCurrentStationInfo(VBox currentStationInfo) {
+        this.currentStationInfo = currentStationInfo;
+    }
+
+    public void setTrainStationInfo(HBox trainStationInfo) {
+        this.trainStationInfo = trainStationInfo;
+    }
+
+    public void setCurrentStationLabel(Label currentStationLabel) {
+        this.currentStationLabel = currentStationLabel;
+    }
+
+    public void setTrainIDLabel(Label trainIDLabel) {
+        this.trainIDLabel = trainIDLabel;
+    }
+
+    public void setNextStationLabel(Label nextStationLabel) {
+        this.nextStationLabel = nextStationLabel;
+    }
+
+    public void setTrainDirectionLabel(Label trainDirectionLabel) {
+        this.trainDirectionLabel = trainDirectionLabel;
+    }
+
+    public void setNextStationsInfo(HBox nextStationsInfo) {
+        this.nextStationsInfo = nextStationsInfo;
+    }
+
+    public void setPrevStation(Label prevStation) {
+        this.prevStation = prevStation;
+    }
+
+    public void setNextStation1(Label nextStation1) {
+        this.nextStation1 = nextStation1;
+    }
+
+    public void setNextStation2(Label nextStation2) {
+        this.nextStation2 = nextStation2;
+    }
+
+    public void setNextStation3(Label nextStation3) {
+        this.nextStation3 = nextStation3;
+    }
+
+    public void setNextStation4(Label nextStation4) {
+        this.nextStation4 = nextStation4;
+    }
+
+    public void setCurrentAdIndex(int currentAdIndex) {
+        this.currentAdIndex = currentAdIndex;
+    }
+
+    public void setAdMediaPaths(List<String> adMediaPaths) {
+        this.adMediaPaths = adMediaPaths;
+    }
+
+    public void setTopSection(HBox topSection) {
+        this.topSection = topSection;
+    }
+
+    public void setAdSection(VBox adSection) {
+        this.adSection = adSection;
+    }
+
+    public void setAdLabel(Label adLabel) {
+        this.adLabel = adLabel;
+    }
+
+    public void setWeatherSection(VBox weatherSection) {
+        this.weatherSection = weatherSection;
+    }
+
+    public void setTimeWeatherLabel(Label timeWeatherLabel) {
+        this.timeWeatherLabel = timeWeatherLabel;
+    }
+
+    public void setTrainInfoLabel(Label trainInfoLabel) {
+        this.trainInfoLabel = trainInfoLabel;
+    }
+
+    public void setBottomSection(VBox bottomSection) {
+        this.bottomSection = bottomSection;
+    }
+
+    public void setTrainInfoSection(HBox trainInfoSection) {
+        this.trainInfoSection = trainInfoSection;
+    }
+
+    public void setNewsScrollPane(ScrollPane newsScrollPane) {
+        this.newsScrollPane = newsScrollPane;
+    }
+
+    public void setNewsSection(HBox newsSection) {
+        this.newsSection = newsSection;
+    }
+
+    public void setNewsLabel(Label newsLabel) {
+        this.newsLabel = newsLabel;
+    }
+
+    public void setTrainInfoLeft(HBox trainInfoLeft) {
+        this.trainInfoLeft = trainInfoLeft;
+    }
+
+    public void setTrainDestinationLabel(Label trainDestinationLabel) {
+        this.trainDestinationLabel = trainDestinationLabel;
+    }
+
+    public void setTrainTimeLabel(Label trainTimeLabel) {
+        this.trainTimeLabel = trainTimeLabel;
+    }
+
+    public void setTrainInfoRight(HBox trainInfoRight) {
+        this.trainInfoRight = trainInfoRight;
+    }
+
+    public void setTrainNextStopLabel(Label trainNextStopLabel) {
+        this.trainNextStopLabel = trainNextStopLabel;
+    }
+
+    public void setTrainNextTimeLabel(Label trainNextTimeLabel) {
+        this.trainNextTimeLabel = trainNextTimeLabel;
+    }
+
+    public void setMapCanvas(Canvas mapCanvas) {
+        this.mapCanvas = mapCanvas;
+    }
+
+    public void setGc(GraphicsContext gc) {
+        this.gc = gc;
+    }
+
+    public void setTrainSimulationTimeline(Timeline trainSimulationTimeline) {
+        this.trainSimulationTimeline = trainSimulationTimeline;
+    }
+
+    public void setUiUpdateTimeline(Timeline uiUpdateTimeline) {
+        this.uiUpdateTimeline = uiUpdateTimeline;
+    }
+
+    public void setTrains(List<Train> trains) {
+        this.trains = trains;
+    }
+
+    public void setStations(List<Station> stations) {
+        this.stations = stations;
+    }
+
+    public void setMapImage(Image mapImage) {
+        this.mapImage = mapImage;
+    }
+
+    public void setNewsTimeline(Timeline newsTimeline) {
+        this.newsTimeline = newsTimeline;
     }
 }

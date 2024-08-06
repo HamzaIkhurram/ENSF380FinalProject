@@ -22,6 +22,17 @@ public class TrainInitializer {
     public static List<Train> initializeTrains(List<double[]> redCoordinates, List<double[]> greenCoordinates, List<double[]> blueCoordinates) {
         List<Train> trains = new ArrayList<>();
 
+        if (redCoordinates == null || greenCoordinates == null || blueCoordinates == null  ) {
+            return null;
+        }
+
+        if (redCoordinates.isEmpty() || greenCoordinates.isEmpty() || blueCoordinates.isEmpty()) {
+            return trains;
+        }
+
+
+
+
         for (int i = 0; i < NUM_TRAINS_PER_LINE; i++) {
             int index = i * 4;
             String direction = (i % 2 == 0) ? "forward" : "backward"; // Alternating directions

@@ -64,7 +64,7 @@ public class NewsController {
      * @param newsLabel     the label to display the news
      * @param newsScrollPane the scroll pane containing the news label
      */
-    private void displayNews(List<String> articles, Label newsLabel, ScrollPane newsScrollPane) {
+    public void displayNews(List<String> articles, Label newsLabel, ScrollPane newsScrollPane) {
         if (articles == null || articles.isEmpty()) {
             newsLabel.setText("No news articles found");
             newsLabel.setWrapText(true);

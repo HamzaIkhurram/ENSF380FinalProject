@@ -5,11 +5,11 @@ import com.sun.speech.freetts.VoiceManager;
 
 public class TextToSpeech {
     private static final String VOICENAME = "kevin16";
-    private static Voice voice;
+    static Voice voice;
+    private static TextToSpeech instance;
 
     public TextToSpeech() {
-        System.setProperty("freetts.voices",
-                "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
+        System.setProperty("freetts.voices", "com.sun.speech.freetts.en.us.cmu_us_kal.KevinVoiceDirectory");
         VoiceManager voiceManager = VoiceManager.getInstance();
         voice = voiceManager.getVoice(VOICENAME);
         if (voice != null) {
@@ -19,16 +19,27 @@ public class TextToSpeech {
         }
     }
 
-    public  void speak(String text) {
+    public static synchronized TextToSpeech getInstance() {
+        if (instance == null) {
+            instance = new TextToSpeech();
+        }
+        return instance;
+    }
+
+    public synchronized void speak(String text) {
         if (voice != null) {
             voice.speak(text);
+        } else {
+            throw new IllegalStateException("Cannot find voice: " + VOICENAME);
         }
     }
 
-    public  void deallocate() {
+    public synchronized void deallocate() {
         if (voice != null) {
             voice.deallocate();
+            voice = null; // Set to null to prevent further use
+        } else {
+            throw new IllegalStateException("Cannot find voice: " + VOICENAME);
         }
     }
-
 }

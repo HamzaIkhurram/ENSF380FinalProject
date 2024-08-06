@@ -17,6 +17,7 @@ public class WeatherParser {
      * @return a list of parsed weather data (temperature, additional temperature, wind direction, wind speed)
      */
     public static List<String> parseWeather(String htmlContent) {
+        // Adjusted regex to capture the temperature and wind speed
         Pattern pattern = Pattern.compile("(\\+\\d+°C)(C\\+\\d+°C)(↗|↘|↑|↓|↙|↖|↘|↗)?(\\d+km/h)");
         Matcher matcher = pattern.matcher(htmlContent.trim());
 

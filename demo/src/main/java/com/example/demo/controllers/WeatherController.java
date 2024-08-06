@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.services.WeatherService;
+import com.example.demo.WeatherService;
 import com.example.demo.WeatherParser;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -21,12 +21,10 @@ public class WeatherController {
      * @param temp             the label to display the temperature
      * @param addTemp          the label to display additional temperature information
      * @param windSpeed        the label to display wind speed
-     * @param weatherService   the service used to fetch weather data
-     * @param weatherParser    the parser used to extract weather information from the fetched data
      */
-    public void fetchTimeAndWeather(Label timeWeatherLabel, Label temp, Label addTemp, Label windSpeed, WeatherService weatherService, WeatherParser weatherParser) {
+    public void fetchTimeAndWeather(Label timeWeatherLabel, Label temp, Label addTemp, Label windSpeed) {
         Timeline timeline = new Timeline(
-                new KeyFrame(Duration.minutes(1), event -> {
+                new KeyFrame(Duration.seconds(10), event -> {
                     try {
                         String weatherData = WeatherService.fetchWeatherData();
                         List<String> parsedWeather = WeatherParser.parseWeather(weatherData);
